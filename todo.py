@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument('--report', action='store_true', help='Generate a report of all tasks')
 
     # Add argument for querying tasks by search terms
-    parser.add_argument('--query', type=str, help='Query tasks based on search terms')
+    parser.add_argument('--query', type=str, required=False, nargs="+", help="priority of task; default value is 1")
 
     # Add argument for marking a task as done
     parser.add_argument('--done', type=int, help='Mark a task as completed by ID')

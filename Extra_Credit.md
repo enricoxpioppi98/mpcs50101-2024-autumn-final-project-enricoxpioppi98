@@ -18,8 +18,34 @@ sudo cp todo.py /usr/local/bin/todo
 ```
 ### 5. Changing the Data Storage Location
 The application currently stores its pickle file in the project directory. To ensure the data file can be accessed from anywhere, store it as a hidden file in the user’s home directory.
-This is already accounted for in the code submitted.
+To do so, update the Tasks class as follows:
+```python
+class Tasks:
+    def __init__(self, filename=None):
+        if filename is None:
+            # Set the pickle file to be in the user's home directory
+            home_dir = os.path.expanduser("~")  # Get the user's home directory
+            filename = os.path.join(home_dir, '.todo.pickle')  # Store it as an invisible file
+        self.filename = filename
+        self.tasks = self.load_tasks()
 
+    def load_tasks(self):
+        """Load tasks from a pickled file."""
+        if os.path.exists(self.filename):
+            with open(self.filename, 'rb') as f:
+                data = pickle.load(f)
+                tasks = data['tasks']
+                # Ensure all tasks have 'created' as a datetime object
+                for task in tasks:
+                    if isinstance(task.created, date) and not isinstance(task.created, datetime):
+                        task.created = datetime.combine(task.created, datetime.min.time())
+                    if task.completed and isinstance(task.completed, date) and not isinstance(task.completed, datetime):
+                        task.completed = datetime.combine(task.completed, datetime.min.time())
+                tasks.sort(key=lambda task: task.created)
+                return tasks
+        else:
+            return []
+```
 ### 6. Test
 On macOS, run
 ```bash

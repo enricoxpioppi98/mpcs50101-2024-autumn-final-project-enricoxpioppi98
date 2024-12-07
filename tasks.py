@@ -6,11 +6,7 @@ import pickle
 from datetime import datetime, date
 
 class Tasks:
-    def __init__(self, filename=None):
-        if filename is None:
-            # Set the pickle file to be in the user's home directory
-            home_dir = os.path.expanduser("~")  # Get the user's home directory
-            filename = os.path.join(home_dir, '.todo.pickle')  # Store it as an invisible file
+    def __init__(self, filename='.todo.pickle'):
         self.filename = filename
         self.tasks = self.load_tasks()
 
@@ -130,15 +126,16 @@ class Tasks:
 
     def query(self, search_terms):
         """Search for tasks based on multiple search terms. Only return non-completed tasks."""
-        terms = search_terms.lower().split()
+        terms = [term.lower() for term in search_terms]
 
         matched_tasks = [
             task for task in self.tasks
             if task.completed is None and any(term in task.name.lower() for term in terms)
         ]
 
+        # Use datetime.max for tasks with no due_date
         matched_tasks.sort(key=lambda task: (
-            datetime.combine(task.due_date, datetime.min.time()) if isinstance(task.due_date, date) else task.due_date,
+            datetime.combine(task.due_date, datetime.min.time()) if isinstance(task.due_date, date) else datetime.max,
             -task.priority
         ))
 
@@ -147,7 +144,6 @@ class Tasks:
         print(f"{'ID':<15} {'Age':<5} {'Due Date':<10} {'Priority':<10} {'Task':<20}")
         print("-" * 60)
 
-        # Display each task
         for task in matched_tasks:
             age = (datetime.today() - task.created).days
             due_date = task.due_date.strftime('%m/%d/%Y') if task.due_date else "-"
