@@ -1,5 +1,3 @@
-Below is the finalized README with improved formatting and code blocks. You can copy and paste this directly into a .md file:
-
 # Task Manager CLI
 
 A simple command-line tool for creating, listing, querying, and managing tasks. Tasks are stored on your local machine in a pickle file (`~/.todo.pickle`) and can be manipulated through various command-line options.
@@ -25,49 +23,63 @@ Run the `todo.py` script with various command-line arguments to manage your task
 
 ```bash
 python todo.py [options]
+```
 
-Adding a Task
+### Adding a Task
 
+```bash
 python todo.py --add "Buy groceries"
+```
 
 You can optionally include a due date and priority:
 
+```bash
 python todo.py --add "Buy groceries" --due 12/25/2024 --priority 3
-
+```
 	•	--due should be in MM/DD/YYYY format.
 	•	--priority should be an integer (1, 2, or 3). The default priority is 1.
 
-Listing Incomplete Tasks
+### Listing Incomplete Tasks
 
+```bash
 python todo.py --list
+```
 
 This displays all incomplete tasks, sorted by due date and then by priority.
 
-Marking a Task as Completed
+### Marking a Task as Completed
 
+```bash
 python todo.py --done <TASK_ID>
+```
 
 Replace <TASK_ID> with the unique ID of the task you want to mark as completed. The unique ID is shown in the list or report.
 
-Deleting a Task
+### Deleting a Task
 
+```bash
 python todo.py --delete <TASK_ID>
+```
 
 Replace <TASK_ID> with the unique ID of the task you want to delete.
 
-Querying Tasks
+### Querying Tasks
 
+```bash
 python todo.py --query "search terms"
+```
 
 This searches all incomplete tasks for the given terms (case-insensitive).
 
-Generating a Report
+#### Generating a Report
 
+```bash
 python todo.py --report
+```
 
 This generates a comprehensive report of all tasks, including those completed.
 
-Task Storage
+## Task Storage
 
 Tasks are saved as a pickle file in your home directory under the filename .todo.pickle. This ensures persistence across sessions. If you want to start fresh, you can delete this file, but note that you’ll lose all your saved tasks.
 
